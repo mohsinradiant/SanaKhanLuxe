@@ -4,6 +4,7 @@
   assign custom_sleeves = product.metafields.custom.custom_sleeves.value
 -%}
 
+{%- if custom_sleeves != blank and custom_sleeves.size > 0 -%}
   <script
     src="{{ 'component-custom-sleeves.js' | asset_url }}"
     type="module"
@@ -72,6 +73,7 @@
       {%- endfor -%}
     </div>
   </custom-sleeves-component>
+{%- endif -%}
 
 {% stylesheet %}
   .custom-sleeves {
