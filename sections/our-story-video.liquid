@@ -1,0 +1,154 @@
+<style>
+    .story-header{border: 1px solid #000; border-bottom: 0;padding: 48px 48px 40px; margin-top: -40px;}
+
+    .founder-image{max-width: 140px;}
+
+    /*VIDEO CSS*/
+    .video-player {position: relative; background: #000; overflow: hidden;}
+    .video-player__video {width: 100%; display: block;}
+    .video-player__thumbnail {position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.3s ease;}
+    .video-player__thumbnail--hidden {opacity: 0; pointer-events: none;}
+    .video-player__controls {position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; transition: position 400ms ease;}
+    .video-player__button {width: 60px; height: 60px; border: none; border-radius: 50%; background: rgba(255, 255, 255, 0.9); color: #333; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; box-shadow: 0 2px 10px rgba(0,0,0,0.3);}
+    .video-player__button:hover {background: #fff; transform: scale(1.1);}
+    .video-player__button:active {transform: scale(0.95);}
+    .video-player__icon {pointer-events: none;}
+
+    .video-player--playing .video-player__controls{top: auto; bottom: 0;}
+    .our-story-heading{text-transform: capitalize;
+      background-color: #fff !important;}
+      @media(max-width:756px){
+      .shopify-section .story-section{
+          padding-top: 0 !important;
+          padding-bottom: 0 !important;    }
+          .story-header {
+      padding: 48px 10px 20px;
+  }
+  .story-header__inner .lead {
+  font-size: 15px;}
+  .story-header__inner .fw-light{
+  font-size: 12px;}
+
+  }
+</style>
+
+<section class="story-section py-5">
+  <div class="container pt-4 pb-5 text-center">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="display-2">
+        <span class="our-story-heading bg-light px-3 position-relative z-1">{{ section.settings.heading }}</span>
+      </h2>
+    {%- endif -%}
+
+    <div class="row">
+      <div class="col-md-10 col-lg-8 mx-auto">
+        <div class="story-header">
+          <div class="story-header__inner">
+            {%- if section.settings.subheading != blank -%}
+              <p class="lead mb-2">{{ section.settings.subheading }}</p>
+            {%- endif -%}
+
+            {%- if section.settings.description != blank -%}
+              <p class="fw-light opacity-75 mb-0">{{ section.settings.description }}</p>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-lg-11 mx-auto">
+<div class="video-player" id="player-{{ section.id }}">
+  <video class="video-player__video" id="video-{{ section.id }}" preload="metadata">
+    <source src="{{ section.settings.video.sources[0].url }}" type="video/mp4">
+  </video>
+
+  <img class="video-player__thumbnail"
+       id="thumb-{{ section.id }}"
+       src="{{ section.settings.thumbnail | image_url }}"
+       alt="Video Thumbnail">
+
+  <div class="video-player__controls">
+    <button class="video-player__button" id="btn-{{ section.id }}">
+      <i class="video-player__icon bi bi-play-fill" id="icon-{{ section.id }}"></i>
+    </button>
+  </div>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const video = document.getElementById("video-{{ section.id }}");
+  const thumb = document.getElementById("thumb-{{ section.id }}");
+  const btn = document.getElementById("btn-{{ section.id }}");
+  const icon = document.getElementById("icon-{{ section.id }}");
+  const player = document.getElementById("player-{{ section.id }}");
+
+  function toggleVideo() {
+    if (video.paused) {
+      video.play();
+      icon.classList.replace("bi-play-fill", "bi-pause");
+      thumb.classList.add("video-player__thumbnail--hidden");
+      player.classList.add("video-player--playing");
+    } else {
+      video.pause();
+      icon.classList.replace("bi-pause", "bi-play-fill");
+      thumb.classList.remove("video-player__thumbnail--hidden");
+      player.classList.remove("video-player--playing");
+    }
+  }
+
+  btn.addEventListener("click", toggleVideo);
+  thumb.addEventListener("click", toggleVideo);
+  video.addEventListener("click", toggleVideo);
+
+  video.addEventListener("ended", () => {
+    icon.classList.replace("bi-pause", "bi-play-fill");
+    thumb.classList.remove("video-player__thumbnail--hidden");
+    player.classList.remove("video-player--playing");
+  });
+</script>
+{% schema %}
+{
+  "name": "Our Story Video",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our Story"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Write a short intro here"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Write your full story paragraph here."
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Upload MP4 Video"
+    },
+    {
+      "type": "image_picker",
+      "id": "thumbnail",
+      "label": "Thumbnail Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Our Story Video"
+    }
+  ]
+}
+{% endschema %}

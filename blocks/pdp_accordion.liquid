@@ -1,0 +1,67 @@
+<div class="product__accordion">
+  <div class="accordion" id="productAccordion">
+    {% if product.metafields.custom.pdp_description != blank %}
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingDesc">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseDesc"
+            aria-expanded="false"
+            aria-controls="collapseDesc"
+          >
+            DESCRIPTION
+          </button>
+        </h2>
+        <div
+          id="collapseDesc"
+          class="accordion-collapse collapse"
+          aria-labelledby="headingDesc"
+          data-bs-parent="#productAccordion"
+        >
+          <div class="accordion-body">
+            <p>{{ product.metafields.custom.pdp_description }}</p>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    {% if product.metafields.custom.pdp_wash_care != blank %}
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingCare">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseCare"
+          aria-expanded="false"
+          aria-controls="collapseCare"
+        >
+          WASH &amp; CARE
+        </button>
+      </h2>
+      <div
+        id="collapseCare"
+        class="accordion-collapse collapse"
+        aria-labelledby="headingCare"
+        data-bs-parent="#productAccordion"
+      >
+        <div class="accordion-body">
+          <p>{{ product.metafields.custom.pdp_wash_care }}</p>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% schema %}
+{
+  "name": "PDP Accordion",
+  "settings": [],
+  "presets": [
+    {
+      "name": "PDP Accordion"
+    }
+  ]
+}
+{% endschema %}

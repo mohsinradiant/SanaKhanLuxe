@@ -1,0 +1,79 @@
+<section class="proimage-section section-paddingY">
+  <div class="container">
+    {% if section.settings.heading != blank %}
+      <h2 class="section-heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    <div class="row gx-3">
+
+      {%- assign product1 = section.settings.product_one -%}
+      {%- assign product2 = section.settings.product_two -%}
+
+      <!-- Product 1 -->
+      <div class="col-12 col-md-6">
+        {% if product1 %}
+          <a class="image-card image-hover-zoom" href="{{ product1.url }}">
+            <figure class="image-card__image overflow-hidden">
+              <img class="w-100" src="{{ product1.featured_image | img_url: 'master' }}" alt="{{ product1.title }}">
+            </figure>
+            <div class="image-card__meta">
+              <div class="image-card__name">{{ product1.title }}</div>
+              <div class="image-card__price transition">
+                <span>{{ product1.price | money }}</span>
+              </div>
+              <div class="image-card__btn transition">Shop Now</div>
+            </div>
+          </a>
+        {% endif %}
+      </div>
+
+      <!-- Product 2 -->
+      <div class="col-12 col-md-6">
+        {% if product2 %}
+          <a class="image-card image-hover-zoom" href="{{ product2.url }}">
+            <figure class="image-card__image overflow-hidden">
+              <img class="w-100" src="{{ product2.featured_image | img_url: 'master' }}" alt="{{ product2.title }}">
+            </figure>
+            <div class="image-card__meta">
+              <div class="image-card__name">{{ product2.title }}</div>
+              <div class="image-card__price transition">
+                <span>{{ product2.price | money }}</span>
+              </div>
+              <div class="image-card__btn transition">Shop Now</div>
+            </div>
+          </a>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Proimage Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Featured Products"
+    },
+    {
+      "type": "product",
+      "id": "product_one",
+      "label": "Select First Product"
+    },
+    {
+      "type": "product",
+      "id": "product_two",
+      "label": "Select Second Product"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "Proimage Section"
+    }
+  ]
+}
+{% endschema %}

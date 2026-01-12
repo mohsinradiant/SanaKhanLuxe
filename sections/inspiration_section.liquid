@@ -1,0 +1,91 @@
+<section class="inspiration-section section-paddingY pt-0">
+  <div class="container">
+    {% if section.settings.heading != blank %}
+      <h2 class="section-heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    <div class="row g-3">
+      {% for block in section.blocks %}
+        {% assign product = block.settings.block_product %}
+        <div class="col-12 col-md-4">
+          <a
+            class="inspiration-block"
+            {% if product %}
+              href="{{ product.url }}"
+            {% endif %}
+          >
+            {% if block.settings.block_video %}
+              <video class="inspiration-block__video" autoplay loop muted playsinline preload="auto">
+                <source src="{{ block.settings.block_video.sources[0].url | video_url }}">
+              </video>
+            {% endif %}
+
+            {% if product %}
+              <div class="suggest-card">
+                <img
+                  class="suggest-card__image"
+                  src="{{ product.featured_image | img_url: 'master' }}"
+                  alt="{{ product.title | escape }}"
+                >
+                <div class="suggest-card__info">
+                  <div class="suggest-card__cat">
+                    {{ product.metafields.custom.product_card_caption }}
+                  </div>
+
+                  <div class="suggest-card__name">
+                    {{ product.title }}
+                  </div>
+
+                  <div class="suggest-card__price">
+                    {{ product.price | money }}
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Inspiration Section",
+  "max_blocks": 3,
+
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Inspiration"
+    }
+  ],
+
+  "blocks": [
+    {
+      "type": "inspiration_card",
+      "name": "Inspiration Card",
+      "settings": [
+        {
+          "type": "product",
+          "id": "block_product",
+          "label": "Select Product"
+        },
+        {
+          "type": "video",
+          "id": "block_video",
+          "label": "Select Video"
+        }
+      ]
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Inspiration Section",
+      "blocks": [{ "type": "inspiration_card" }, { "type": "inspiration_card" }, { "type": "inspiration_card" }]
+    }
+  ]
+}
+{% endschema %}

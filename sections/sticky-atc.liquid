@@ -1,0 +1,138 @@
+<section class="sticky-atc" id="sticky-atc">
+  <div class="sticky-atc__inner">
+    <!-- Column 1: Featured Image -->
+    <div class="sticky-atc__image">
+      <img
+        src="{{ product.featured_image | img_url: '200x' }}"
+        alt="{{ product.title }}"
+        loading="lazy"
+      >
+    </div>
+
+    <!-- Column 2: Title + Price -->
+    <div class="sticky-atc__info">
+      <span class="sticky-atc__title">{{ product.title }}</span>
+      <span class="sticky-atc__price" id="sticky-atc-price">
+        {{ product.selected_or_first_available_variant.price | money }}
+      </span>
+    </div>
+
+    <!-- Column 3: Add to Cart Button -->
+    <div class="sticky-atc__buttons">
+      <form
+        method="post"
+        action="/cart/add"
+        class="product-form sticky-atc-form"
+        data-product-id="{{ product.id }}"
+        data-section-id="sticky-atc"
+      >
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+        {% render 'add-to-cart-button',
+          add_to_cart_text: 'Buy Now',
+          class: 'button sticky-atc-btn',
+          can_add_to_cart: product.selected_or_first_available_variant.available,
+          product: product,
+          section: section
+        %}
+      </form>
+    </div>
+  </div>
+  {% if template == 'product' %}
+    <style>
+            .footer-content{
+          margin-bottom: 84px;
+        }
+      @media(max-width:756px){
+      .footer-content{
+          margin-bottom: 75px;
+        }
+      }
+    </style>
+  {% endif %}
+  <style>
+    .sticky-atc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 999;
+      background: #fff;
+      border-top: 1px solid #ececec;
+      padding: 12px 16px;
+      display: none;
+    }
+    .sticky-atc.visible { display: block; }
+
+    .sticky-atc__inner {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .sticky-atc__image img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .sticky-atc__info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sticky-atc__title {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+    .sticky-atc__price {
+      font-size: 14px;
+      color: #000;
+      font-weight: 500;
+    }
+
+    .sticky-atc-btn {
+      padding: 10px 20px;
+    }
+
+    @media (max-width: 480px) {
+      .sticky-atc__image img { width: 50px; height: 50px; }
+      .sticky-atc-btn { padding: 8px 16px; }
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const stickyBar = document.getElementById('sticky-atc');
+      const productForm = document.querySelector("form[action='/cart/add']");
+
+      // Show sticky ATC when default form is out of view
+      if (productForm) {
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            stickyBar.classList.toggle('visible', !entry.isIntersecting);
+          },
+          { threshold: 0 }
+        );
+        observer.observe(productForm);
+      }
+
+      // Initialize AJAX Add to Cart (theme JS)
+      const stickyForm = document.querySelector('.sticky-atc-form');
+      if (stickyForm && window.ProductForm) {
+        new ProductForm(stickyForm, 'sticky-atc');
+      }
+    });
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "Sticky ATC",
+  "settings": [],
+  "presets": [{ "name": "Sticky ATC" }]
+}
+{% endschema %}

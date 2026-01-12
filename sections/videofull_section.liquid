@@ -1,0 +1,73 @@
+<section class="videofull-section">
+  {% if section.settings.main_video %}
+    <video class="videofull-main" autoplay loop muted playsinline preload="auto">
+                  <source src="{{ section.settings.main_video.sources[0].url | video_url }}">
+    </video>
+  {% endif %}
+
+  <div class="video-overlay-cards container">
+    {% for block in section.blocks %}
+      {% assign product = block.settings.card_product %}
+
+      <a
+        class="suggest-card"
+        {% if product %}
+          href="{{ product.url }}"
+        {% endif %}
+      >
+        <img
+          class="suggest-card__image"
+          src="{{ product.featured_image | img_url: 'master' }}"
+          alt="{{ product.title | escape }}"
+        >
+
+        <div class="suggest-card__info">
+          <div class="suggest-card__cat">
+            {{ product.metafields.custom.product_card_caption }}
+          </div>
+          <div class="suggest-card__name">
+            {{ product.title }}
+          </div>
+          <div class="suggest-card__price">
+            {{ product.price | money }}
+          </div>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Videofull Section",
+  "max_blocks": 3,
+
+  "settings": [
+    {
+      "type": "video",
+      "id": "main_video",
+      "label": "Main Background Video"
+    }
+  ],
+
+  "blocks": [
+    {
+      "type": "suggest_card",
+      "name": "Suggest Card",
+      "settings": [
+        {
+          "type": "product",
+          "id": "card_product",
+          "label": "Select Product"
+        }
+      ]
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Videofull Section",
+      "blocks": [{ "type": "suggest_card" }, { "type": "suggest_card" }, { "type": "suggest_card" }]
+    }
+  ]
+}
+{% endschema %}

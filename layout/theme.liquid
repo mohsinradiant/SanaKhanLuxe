@@ -1,0 +1,223 @@
+<!doctype html>
+<html
+  class="no-js{% if request.design_mode %} shopify-design-mode{% endif %}"
+  lang="{{ request.locale.iso_code }}"
+>
+  <head>
+    <!-- PRIORITY LOADERS -->
+    <link rel="preconnect" href="https://cdn.shopify.com">
+    <link rel="dns-prefetch" href="https://cdn.shopify.com">
+    {{ 'custom.css' | asset_url | stylesheet_tag }}
+
+    <link
+      rel="preload"
+      as="image"
+      fetchpriority="high"
+      href="https://cdn.shopify.com/s/files/1/0694/7661/4309/files/Left_curtain.avif?v=1763451425"
+    >
+    <link
+      rel="preload"
+      as="image"
+      fetchpriority="high"
+      href="https://cdn.shopify.com/s/files/1/0694/7661/4309/files/Right_curtain.avif?v=1763451425"
+    >
+    <link
+      rel="preload"
+      as="image"
+      fetchpriority="high"
+      href="https://cdn.shopify.com/s/files/1/0694/7661/4309/files/sana_khanj_logo_white.png?v=1763451626"
+    >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- SAFE HOLDER (Browsers won't move this) -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aboreto&display=swap" rel="stylesheet">
+    {% comment %} <template id="curtain-template">
+      <div id="curtain-wrapper">
+        <div id="curtain-left" class="curtain"></div>
+        <div id="curtain-right" class="curtain"></div>
+
+        <div id="curtain-center">
+          <img
+            src="https://cdn.shopify.com/s/files/1/0694/7661/4309/files/sana_khanj_logo_white.png?v=1763451626"
+            class="curtain-logo"
+          >
+          <p class="curtain-text">Effortless luxury. Unmatched detail.</p>
+
+          <div class="curtain-input">
+            <input id="curtain-input" type="password" placeholder="Enter password">
+            <button id="curtain-btn">Enter Store</button>
+            <p id="curtain-error" style="display:none;">Incorrect password</p>
+          </div>
+        </div>
+      </div>
+    </template>
+    <script>
+      // place HTML inside documentElement before anything renders
+      const tpl = document.getElementById('curtain-template');
+      document.documentElement.insertBefore(tpl.content.cloneNode(true), document.documentElement.firstChild);
+    </script>
+    <style>
+      #curtain-wrapper {
+        position: fixed; inset: 0; width: 100vw; height: 100vh;
+        z-index: 999999; overflow: hidden;
+        visibility: hidden; opacity: 0;
+      }
+      .curtain {
+        position:absolute; top:0; width:50vw; height:100vh;
+        background-size:cover; background-position:center;
+        transform:translate3d(0,0,0);
+        transition:transform 1.2s cubic-bezier(0.25,0.8,0.35,1);
+        will-change:transform;
+      }
+      #curtain-left  { left:0;
+        background-image:url(https://cdn.shopify.com/s/files/1/0694/7661/4309/files/Left_curtain.avif?v=1763451425); }
+      #curtain-right { right:0;
+        background-image:url(https://cdn.shopify.com/s/files/1/0694/7661/4309/files/Right_curtain.avif?v=1763451425); }
+
+      #curtain-center {
+        position:absolute; top:50%; left:50%;
+        transform:translate(-50%, -50%);
+        text-align:center; color:#fff; opacity:1;
+        transition:opacity .6s ease;
+        display:flex; flex-direction:column; align-items:center;
+        font-family: arial;
+      }
+
+      .curtain-logo { width:210px; margin-bottom:20px; }
+      .curtain-text { margin:20px 0 40px; font-size:18px; opacity:.75; }
+
+      #curtain-input {
+        padding:10px 15px; width:240px; height:40px;
+        color:#fff; border:1px solid #fff; background:transparent;
+      }
+          #curtain-input::placeholder {
+          color: #fff;
+        }
+      .curtain-input {
+        display:flex; gap:10px; justify-content:center; align-items:center;
+      }
+      #curtain-btn {
+        padding:10px 18px; background:#fff; color:#000;
+        border:none; cursor:pointer; height:40px;
+      }
+      #curtain-error { color:#ff4b4b; margin-top:10px; }
+
+      @media(max-width:756px){
+        .curtain-input { width:80vw; flex-direction:column; }
+        #curtain-input, #curtain-btn { width:100%; }
+      }
+    </style>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const wrapper = document.getElementById('curtain-wrapper');
+        const btn = document.getElementById('curtain-btn');
+        const input = document.getElementById('curtain-input');
+        const error = document.getElementById('curtain-error');
+        const left = document.getElementById('curtain-left');
+        const right = document.getElementById('curtain-right');
+        const center = document.getElementById('curtain-center');
+
+        if (localStorage.getItem('curtain_passed')) return;
+
+        requestAnimationFrame(() => {
+          wrapper.style.visibility = 'visible';
+          wrapper.style.opacity = '1';
+        });
+
+        document.body.style.overflow = 'hidden';
+
+        btn.addEventListener('click', () => {
+          if (input.value.trim() !== 'luxe') {
+            error.style.display = 'block';
+            return;
+          }
+
+          error.style.display = 'none';
+
+          left.style.transform = 'translate3d(-100%, 0, 0)';
+          right.style.transform = 'translate3d(100%, 0, 0)';
+          center.style.opacity = '0';
+
+          localStorage.setItem('curtain_passed', 'true');
+
+          setTimeout(() => {
+            wrapper.style.opacity = '0';
+            wrapper.style.visibility = 'hidden';
+            document.body.style.overflow = '';
+          }, 1200);
+        });
+      });
+    </script> {% endcomment %}
+
+    {%- if settings.favicon != blank -%}
+      <link
+        rel="icon"
+        type="image/png"
+        href="{{ settings.favicon | image_url: width: 32, height: 32 }}"
+      >
+    {%- endif -%}
+
+    {% comment %} This a way to wait for main content to load when navigating to a new page so that the view transitions can work consistently {% endcomment %}
+    <link
+      rel="expect"
+      href="#MainContent"
+      blocking="render"
+      id="view-transition-render-blocker"
+    >
+
+    {%- render 'meta-tags' -%}
+    {%- render 'stylesheets' -%}
+    {%- render 'fonts' -%}
+    {%- render 'scripts' -%}
+    {%- render 'theme-styles-variables' -%}
+    {%- render 'color-schemes' -%}
+
+    {% if request.design_mode %}
+      {%- render 'theme-editor' -%}
+    {% endif %}
+
+    {{ content_for_header }}
+  </head>
+
+  <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
+    {% comment %} {% render 'password-curtain' %} {% endcomment %}
+    {% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
+
+    <div id="header-group">
+      {% sections 'header-group' %}
+    </div>
+
+    <script
+      src="{{ 'critical.js' | asset_url }}"
+      type="module"
+      async
+      blocking="render"
+    ></script>
+
+    <main
+      id="MainContent"
+      class="content-for-layout"
+      role="main"
+      data-page-transition-enabled="{{ settings.page_transition_enabled }}"
+      data-product-transition="{{ settings.transition_to_main_product }}"
+      data-template="{{ template }}"
+    >
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    {% render 'search-modal' %}
+
+    {% if settings.quick_add or settings.mobile_quick_add %}
+      {% render 'quick-add-modal' %}
+    {% endif %}
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Bootstrap JS Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

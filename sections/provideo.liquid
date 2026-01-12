@@ -1,0 +1,111 @@
+<section class="provideo-section">
+  <div class="container-fluid px-2">
+    <h3 class="provideo-section-heading">{{ section.settings.heading }}</h3>
+    <div class="row gx-2">
+      {% for block in section.blocks %}
+
+        <div class="col-12 col-md-6">
+          <a href="{{ block.settings.collection_link.url }}" class="video-card d-block">
+
+            {% if block.settings.media_type == 'image' %}
+              <img 
+                class="video-card__video w-100"
+                src="{{ block.settings.image_file | img_url: 'master' }}"
+                alt=""
+              >
+
+            {% elsif block.settings.media_type == 'video' %}
+              {% if block.settings.video_file != blank %}
+                <video 
+                  class="video-card__video w-100"
+                  autoplay 
+                  loop 
+                  muted 
+                  playsinline 
+                  preload="auto"
+                >
+                  <source src="{{ block.settings.video_file.sources[0].url | video_url }}">
+                </video>
+              {% endif %}
+            {% endif %}
+
+            <div class="video-card__meta">
+              <div class="video-card__name">
+                {{ block.settings.custom_heading }}
+              </div>
+               <div class="video-card__btn">{{ block.settings.cta_text}}</div>
+            </div>
+
+          </a>
+        </div>
+
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Provideo Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Media Card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "media_type",
+          "label": "Select Media Type",
+          "options": [
+            { "value": "image", "label": "Image" },
+            { "value": "video", "label": "Video" }
+          ],
+          "default": "image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_file",
+          "label": "Upload Image"
+        },
+        {
+          "type": "video",
+          "id": "video_file",
+          "label": "Upload Video"
+        },
+        {
+          "type": "text",
+          "id": "custom_heading",
+          "label": "Card Heading",
+          "default": "Custom Heading"
+        },
+                {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Card CTA"
+        },
+        {
+          "type": "collection",
+          "id": "collection_link",
+          "label": "Collection Link"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 2,
+  "presets": [
+    {
+      "name": "Provideo Section",
+      "blocks": [
+        { "type": "card" },
+        { "type": "card" }
+      ]
+    }
+  ]
+}
+{% endschema %}
