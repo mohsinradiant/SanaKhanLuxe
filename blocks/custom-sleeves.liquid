@@ -18,13 +18,13 @@
     {{ block.shopify_attributes }}
   >
     <h3 class="custom-sleeves__heading">Custom Sleeves (Optional)</h3>
-    
+
     <div class="custom-sleeves__options">
       {%- for sleeve in custom_sleeves -%}
         {%- assign sleeve_index = forloop.index0 -%}
         {%- assign sleeve_id = 'custom-sleeve-' | append: block.id | append: '-' | append: sleeve_index -%}
         {%- assign first_image = sleeve.images.value[0] -%}
-        
+
         <div class="custom-sleeves__option" data-sleeve-index="{{ sleeve_index }}">
           <div class="custom-sleeves__option-content">
             {%- if first_image != blank -%}
@@ -32,28 +32,28 @@
                 {{ first_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: sleeve.title }}
               </div>
             {%- endif -%}
-            
+
             <div class="custom-sleeves__option-details">
               {%- if sleeve.title != blank -%}
                 <h4 class="custom-sleeves__option-title">{{ sleeve.title }}</h4>
               {%- endif -%}
-              
+
               {%- if sleeve.sub_title != blank -%}
                 <p class="custom-sleeves__option-subtitle">{{ sleeve.sub_title }}</p>
               {%- endif -%}
-              
+
               {%- if sleeve.description != blank -%}
                 <p class="custom-sleeves__option-description">{{ sleeve.description }}</p>
               {%- endif -%}
-              
-{%- if sleeve.price.value != blank -%}
-  <p class="custom-sleeves__option-price">
-    Additional {{ sleeve.price.value | money }} (subject to approval)
-  </p>
-{%- endif -%}
+
+              {%- if sleeve.price.value != blank -%}
+                <p class="custom-sleeves__option-price">
+                  Additional {{ sleeve.price.value | money }} (subject to approval)
+                </p>
+              {%- endif -%}
             </div>
           </div>
-          
+
           <input
             type="checkbox"
             id="{{ sleeve_id }}"
@@ -77,6 +77,10 @@
 {%- endif -%}
 
 {% stylesheet %}
+  custom-sleeves-component{
+    margin-top: 20px;
+  }
+
   .custom-sleeves {
     width: 100%;
   }
