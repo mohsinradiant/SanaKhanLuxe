@@ -46,11 +46,11 @@
                 <p class="custom-sleeves__option-description">{{ sleeve.description }}</p>
               {%- endif -%}
               
-              {%- if sleeve.price != blank -%}
-                <p class="custom-sleeves__option-price">
-                  Additional {{ sleeve.price | money }} (subject to approval)
-                </p>
-              {%- endif -%}
+{%- if sleeve.price.value != blank -%}
+  <p class="custom-sleeves__option-price">
+    Additional {{ sleeve.price.value | money }} (subject to approval)
+  </p>
+{%- endif -%}
             </div>
           </div>
           
