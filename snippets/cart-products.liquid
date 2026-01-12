@@ -209,6 +209,21 @@
                       {%- endfor -%}
                     </dl>
 
+                    {%- comment -%} Show approval message for custom sleeves {%- endcomment -%}
+                    {%- assign has_custom_sleeves = false -%}
+                    {%- for property in item.properties -%}
+                      {%- if property.first == 'Custom Sleeves' and property.last != blank -%}
+                        {%- assign has_custom_sleeves = true -%}
+                        {%- break -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+                    {%- if has_custom_sleeves -%}
+                      <p class="cart-items__custom-sleeves-message">
+                        Custom sleeves requested.
+                        You'll receive an email with an invoice link once approved by the team.
+                      </p>
+                    {%- endif -%}
+
                     {% if item.selling_plan_allocation %}
                       <p>{{ item.selling_plan_allocation.selling_plan.name }}</p>
                     {% endif %}
@@ -766,5 +781,14 @@
   .cart-items__properties dt,
   .cart-items__properties dd {
     display: inline;
+  }
+
+  .cart-items__custom-sleeves-message {
+    margin-block-start: var(--margin-sm);
+    padding: var(--padding-sm);
+    background-color: rgb(var(--color-foreground-rgb) / 0.05);
+    border-radius: var(--style-border-radius-inputs);
+    font-size: var(--cart-font-size--sm);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
   }
 {% endstylesheet %}

@@ -1,0 +1,268 @@
+{%- liquid
+  assign block_settings = block.settings
+  assign product_form_id = 'BuyButtons-ProductForm-' | append: section.id
+  assign custom_sleeves = product.metafields.custom.custom_sleeves.value
+-%}
+
+{%- if custom_sleeves != blank and custom_sleeves.size > 0 -%}
+  <script
+    src="{{ 'component-custom-sleeves.js' | asset_url }}"
+    type="module"
+    fetchpriority="low"
+  ></script>
+
+  <custom-sleeves-component
+    class="custom-sleeves spacing-style"
+    style="{% render 'spacing-style', settings: block_settings %}"
+    data-product-form-id="{{ product_form_id }}"
+    {{ block.shopify_attributes }}
+  >
+    <h3 class="custom-sleeves__heading">Custom Sleeves (Optional)</h3>
+    
+    <div class="custom-sleeves__options">
+      {%- for sleeve in custom_sleeves -%}
+        {%- assign sleeve_index = forloop.index0 -%}
+        {%- assign sleeve_id = 'custom-sleeve-' | append: block.id | append: '-' | append: sleeve_index -%}
+        {%- assign first_image = sleeve.images.value[0] -%}
+        
+        <div class="custom-sleeves__option" data-sleeve-index="{{ sleeve_index }}">
+          <div class="custom-sleeves__option-content">
+            {%- if first_image != blank -%}
+              <div class="custom-sleeves__option-image">
+                {{ first_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: sleeve.title }}
+              </div>
+            {%- endif -%}
+            
+            <div class="custom-sleeves__option-details">
+              {%- if sleeve.title != blank -%}
+                <h4 class="custom-sleeves__option-title">{{ sleeve.title }}</h4>
+              {%- endif -%}
+              
+              {%- if sleeve.sub_title != blank -%}
+                <p class="custom-sleeves__option-subtitle">{{ sleeve.sub_title }}</p>
+              {%- endif -%}
+              
+              {%- if sleeve.description != blank -%}
+                <p class="custom-sleeves__option-description">{{ sleeve.description }}</p>
+              {%- endif -%}
+              
+              {%- if sleeve.price != blank -%}
+                <p class="custom-sleeves__option-price">
+                  Additional {{ sleeve.price | money }} (subject to approval)
+                </p>
+              {%- endif -%}
+            </div>
+          </div>
+          
+          <input
+            type="checkbox"
+            id="{{ sleeve_id }}"
+            class="custom-sleeves__checkbox"
+            name="custom-sleeve-selection"
+            value="{{ sleeve_index }}"
+            data-sleeve-title="{{ sleeve.title | escape }}"
+            data-sleeve-subtitle="{{ sleeve.sub_title | escape }}"
+            data-sleeve-price="{{ sleeve.price | money }}"
+          >
+          <label
+            class="custom-sleeves__checkbox-label"
+            for="{{ sleeve_id }}"
+          >
+            <span class="visually-hidden">Select {{ sleeve.title }}</span>
+          </label>
+        </div>
+      {%- endfor -%}
+    </div>
+  </custom-sleeves-component>
+{%- endif -%}
+
+{% stylesheet %}
+  .custom-sleeves {
+    width: 100%;
+  }
+
+  .custom-sleeves__heading {
+    margin-bottom: var(--margin-md);
+  }
+
+  .custom-sleeves__options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md);
+  }
+
+  .custom-sleeves__option {
+    position: relative;
+    border: 1px solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs);
+    padding: var(--padding-md);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--gap-md);
+  }
+
+  .custom-sleeves__option-content {
+    flex: 1;
+    display: flex;
+    gap: var(--gap-md);
+    align-items: flex-start;
+  }
+
+  .custom-sleeves__option-image {
+    flex-shrink: 0;
+    width: 100px;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: var(--style-border-radius-inputs);
+  }
+
+  .custom-sleeves__option-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .custom-sleeves__option-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-2xs);
+  }
+
+  .custom-sleeves__option-title {
+    font-weight: var(--font-weight-bold);
+    margin: 0;
+  }
+
+  .custom-sleeves__option-subtitle {
+    font-weight: var(--font-weight-medium);
+    margin: 0;
+  }
+
+  .custom-sleeves__option-description {
+    margin: 0;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
+  }
+
+  .custom-sleeves__option-price {
+    margin: 0;
+    font-weight: var(--font-weight-medium);
+  }
+
+  .custom-sleeves__checkbox {
+    position: absolute;
+    opacity: 0;
+    margin: 0;
+    width: 22px;
+    height: 22px;
+  }
+
+  .custom-sleeves__checkbox-label {
+    position: absolute;
+    top: var(--padding-md);
+    right: var(--padding-md);
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .custom-sleeves__checkbox:focus-visible + .custom-sleeves__checkbox-label {
+    outline: var(--focus-outline-width) solid currentcolor;
+    outline-offset: var(--focus-outline-offset);
+    border-radius: var(--style-border-radius-inputs);
+  }
+
+  .custom-sleeves__checkbox-label::before {
+    content: '';
+    width: 22px;
+    height: 22px;
+    border: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-35-55));
+    border-radius: 5px;
+    background-color: var(--color-background);
+    display: block;
+    transition: background-color var(--animation-speed) ease, border-color var(--animation-speed) ease;
+  }
+
+  .custom-sleeves__checkbox:checked + .custom-sleeves__checkbox-label::before {
+    background-color: var(--color-foreground);
+    border-color: var(--color-foreground);
+  }
+
+  .custom-sleeves__checkbox:checked + .custom-sleeves__checkbox-label::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 10px;
+    border: solid var(--color-background);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+  }
+
+  .custom-sleeves__option:has(.custom-sleeves__checkbox:checked) {
+    border-color: var(--color-foreground);
+    border-width: 2px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .custom-sleeves__option-image {
+      width: 80px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Custom Sleeves",
+  "tag": "custom-sleeves-component",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "Left padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "Right padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ]
+}
+{% endschema %}
