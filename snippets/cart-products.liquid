@@ -180,7 +180,6 @@
                     or item.selling_plan_allocation != null
                   -%}
                     <dl class="cart-items__variants">
-                      {%- comment -%} Variant options {%- endcomment -%}
                       {%- if item.product.has_only_default_variant == false and item.item_components.size == 0 -%}
                         {%- for option in item.options_with_values -%}
                           <div class="cart-items__variant">
@@ -193,7 +192,6 @@
                         {%- endfor -%}
                       {%- endif -%}
 
-                      {%- comment -%} Custom Sleeves properties {%- endcomment -%}
                       {%- assign has_custom_sleeves = false -%}
 
                       {%- for property in item.properties -%}
@@ -202,20 +200,19 @@
                         {%- assign first_char = key | slice: 0 -%}
 
                         {%- if value != blank and first_char != '_' -%}
-                          {%- case key -%}
-                            {%- when 'Custom Sleeves' -%}
-                              {%- assign has_custom_sleeves = true -%}
-                              <div class="cart-items__properties">
-                                <dt>Custom Sleeves:</dt>
-                                <dd>{{ value }}</dd>
-                              </div>
+                          {%- if key == 'Custom Sleeves' -%}
+                            {%- assign has_custom_sleeves = true -%}
+                            <div class="cart-items__properties">
+                              <dt>Custom Sleeves:</dt>
+                              <dd>{{ value }}</dd>
+                            </div>
 
-                            {%- when 'Custom Sleeves Price' -%}
-                              <div class="cart-items__properties">
-                                <dt>Additional Price:</dt>
-                                <dd>{{ value }} (subject to approval)</dd>
-                              </div>
-                          {%- endcase -%}
+                          {%- elsif key == 'Custom Sleeves Price' -%}
+                            <div class="cart-items__properties">
+                              <dt>Additional Price:</dt>
+                              <dd>{{ value }} (subject to approval)</dd>
+                            </div>
+                          {%- endif -%}
                         {%- endif -%}
                       {%- endfor -%}
                     </dl>
