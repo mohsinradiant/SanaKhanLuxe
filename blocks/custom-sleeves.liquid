@@ -28,14 +28,8 @@
         <div class="custom-sleeves__option" data-sleeve-index="{{ sleeve_index }}">
           <div class="custom-sleeves__option-content">
             {%- if sleeve_images != blank and sleeve_images.size > 0 -%}
-              {%- assign first_item = sleeve_images.first -%}
-
               <div class="custom-sleeves__option-image">
-                {%- if first_item.preview_image != blank -%}
-                  {{ first_item.preview_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: sleeve.title }}
-                {%- else -%}
-                  {{ first_item | image_url: width: 200 | image_tag: loading: 'lazy', alt: sleeve.title }}
-                {%- endif -%}
+                {{ sleeve_images.first | image_tag: width: 200, loading: 'lazy', alt: sleeve.title }}
               </div>
             {%- endif -%}
 
