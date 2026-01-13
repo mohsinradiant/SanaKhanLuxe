@@ -27,19 +27,11 @@
 
         <div class="custom-sleeves__option" data-sleeve-index="{{ sleeve_index }}">
           <div class="custom-sleeves__option-content">
-            {%- if sleeve_images != blank and sleeve_images.size > 0 -%}
-              {%- assign first_file = sleeve_images.first -%}
-              {%- if first_file.url != blank -%}
-                <div class="custom-sleeves__option-image">
-                  <img
-                    src="{{ first_file.url }}"
-                    width="200"
-                    loading="lazy"
-                    alt="{{ sleeve.title | escape }}"
-                  >
-                </div>
-              {%- endif -%}
-            {%- endif -%}
+{%- if sleeve.images != blank -%}
+  <div class="custom-sleeves__option-image">
+    {{ sleeve.images | metafield_tag }}
+  </div>
+{%- endif -%}
 
             <div class="custom-sleeves__option-details">
               {%- if sleeve.title != blank -%}
