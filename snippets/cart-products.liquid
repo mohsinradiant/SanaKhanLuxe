@@ -199,8 +199,9 @@
                       {%- for property in item.properties -%}
                         {%- assign key = property.first -%}
                         {%- assign value = property.last -%}
+                        {%- assign first_char = key | slice: 0 -%}
 
-                        {%- if value != blank and key | slice: 0 != '_' -%}
+                        {%- if value != blank and first_char != '_' -%}
                           {%- case key -%}
                             {%- when 'Custom Sleeves' -%}
                               {%- assign has_custom_sleeves = true -%}
@@ -219,7 +220,6 @@
                       {%- endfor -%}
                     </dl>
 
-                    {%- comment -%} Approval message (once, sane) {%- endcomment -%}
                     {%- if has_custom_sleeves -%}
                       <p class="cart-items__custom-sleeves-message">
                         Custom sleeves requested. You'll receive an email with an invoice link once approved by the
