@@ -27,7 +27,7 @@
 
         <div class="custom-sleeves__option" data-sleeve-index="{{ sleeve_index }}">
           <div class="custom-sleeves__option-content">
-            {%- if sleeve.images.value != blank and sleeve.images.value.size > 0 -%}
+            {%- if sleeve.images.value != blank -%}
               <div class="custom-sleeves__option-image">
                 {{ sleeve.images.value.first | metafield_tag }}
               </div>
