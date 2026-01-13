@@ -29,7 +29,15 @@
           <div class="custom-sleeves__option-content">
             {%- if sleeve.images.value != blank and sleeve.images.value.size > 0 -%}
               <div class="custom-sleeves__option-image">
-                {{ sleeve.images.value.first | image_tag }}
+                {%- assign file = sleeve.images.value.first -%}
+                {%- if file and file.url != blank -%}
+                  <img
+                    src="{{ file.url }}"
+                    width="200"
+                    loading="lazy"
+                    alt="{{ sleeve.title | escape }}"
+                  >
+                {%- endif -%}
               </div>
             {%- endif -%}
 
