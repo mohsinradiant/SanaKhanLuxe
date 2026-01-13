@@ -19,69 +19,65 @@
   >
     <h3 class="custom-sleeves__heading">Custom Sleeves (Optional)</h3>
 
-<div class="custom-sleeves__options">
-  {%- for sleeve in custom_sleeves -%}
-    {%- assign sleeve_index = forloop.index0 -%}
-    {%- assign sleeve_id = 'custom-sleeve-' | append: block.id | append: '-' | append: sleeve_index -%}
-    {%- assign first_image = sleeve.images.value[0] -%}
+    <div class="custom-sleeves__options">
+      {%- for sleeve in custom_sleeves -%}
+        {%- assign sleeve_index = forloop.index0 -%}
+        {%- assign sleeve_id = 'custom-sleeve-' | append: block.id | append: '-' | append: sleeve_index -%}
+        {%- assign first_image = sleeve.images.value[0] -%}
 
-    <div class="custom-sleeves__option">
-      <div class="custom-sleeves__option-content">
-        {%- if first_image != blank -%}
-          <div class="custom-sleeves__option-image">
-            {{ first_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: sleeve.title }}
+        <div class="custom-sleeves__option" data-sleeve-index="{{ sleeve_index }}">
+          <div class="custom-sleeves__option-content">
+            {%- if first_image != blank -%}
+              <div class="custom-sleeves__option-image">
+                {{ first_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: sleeve.title }}
+              </div>
+            {%- endif -%}
+
+            <div class="custom-sleeves__option-details">
+              {%- if sleeve.title != blank -%}
+                <h4 class="custom-sleeves__option-title">{{ sleeve.title }}</h4>
+              {%- endif -%}
+
+              {%- if sleeve.sub_title != blank -%}
+                <p class="custom-sleeves__option-subtitle">{{ sleeve.sub_title }}</p>
+              {%- endif -%}
+
+              {%- if sleeve.description != blank -%}
+                <p class="custom-sleeves__option-description">{{ sleeve.description }}</p>
+              {%- endif -%}
+
+              {%- if sleeve.price.value != blank -%}
+                <p class="custom-sleeves__option-price">
+                  Additional {{ sleeve.price.value | money }} (subject to approval)
+                </p>
+              {%- endif -%}
+            </div>
           </div>
-        {%- endif -%}
 
-        <div class="custom-sleeves__option-details">
-          {%- if sleeve.title != blank -%}
-            <h4 class="custom-sleeves__option-title">{{ sleeve.title }}</h4>
-          {%- endif -%}
-
-          {%- if sleeve.sub_title != blank -%}
-            <p class="custom-sleeves__option-subtitle">{{ sleeve.sub_title }}</p>
-          {%- endif -%}
-
-          {%- if sleeve.description != blank -%}
-            <p class="custom-sleeves__option-description">{{ sleeve.description }}</p>
-          {%- endif -%}
-
-          {%- if sleeve.price.value != blank -%}
-            <p class="custom-sleeves__option-price">
-              Additional {{ sleeve.price.value | money }} (subject to approval)
-            </p>
-          {%- endif -%}
+          <input
+            type="checkbox"
+            id="{{ sleeve_id }}"
+            class="custom-sleeves__checkbox"
+            name="custom-sleeve-selection"
+            value="{{ sleeve_index }}"
+            data-sleeve-title="{{ sleeve.title | escape }}"
+            data-sleeve-subtitle="{{ sleeve.sub_title | escape }}"
+            data-sleeve-price="{{ sleeve.price | money }}"
+          >
+          <label
+            class="custom-sleeves__checkbox-label"
+            for="{{ sleeve_id }}"
+          >
+            <span class="visually-hidden">Select {{ sleeve.title }}</span>
+          </label>
         </div>
-      </div>
-
-      <!-- THIS IS THE FIX -->
-      <input
-        type="checkbox"
-        id="{{ sleeve_id }}"
-        class="custom-sleeves__checkbox"
-        name="properties[Custom Sleeves]"
-        value="{{ sleeve.title }}"
-      >
-
-      <input
-        type="hidden"
-        name="properties[Custom Sleeves Price]"
-        value="{{ sleeve.price.value | money }}"
-      >
-
-      <label class="custom-sleeves__checkbox-label" for="{{ sleeve_id }}">
-        <span class="visually-hidden">Select {{ sleeve.title }}</span>
-      </label>
+      {%- endfor -%}
     </div>
-
-  {%- endfor -%}
-</div>
-
   </custom-sleeves-component>
 {%- endif -%}
 
 {% stylesheet %}
-  custom-sleeves-component {
+  custom-sleeves-component{
     margin-top: 20px;
   }
 
