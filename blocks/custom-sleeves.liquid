@@ -30,6 +30,7 @@
             {%- if sleeve.images.value != blank and sleeve.images.value.size > 0 -%}
               <div class="custom-sleeves__option-image">
                 {%- assign file = sleeve.images.value.first -%}
+                xyz
                 {%- if file and file.url != blank -%}
                   <img
                     src="{{ file.url }}"
