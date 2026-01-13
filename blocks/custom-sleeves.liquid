@@ -28,12 +28,10 @@
           <div class="custom-sleeves__option-content">
             {%- if sleeve.images.value != blank -%}
               {%- for img in sleeve.images.value -%}
-                {%- if img != blank -%}
-                  <div class="custom-sleeves__option-image">
-                    {{ img | metafield_tag }}
-                  </div>
-                  {%- break -%}
-                {%- endif -%}
+                <div class="custom-sleeves__option-image">
+                  {{ img | image_url: width: 200 | image_tag: loading: 'lazy', alt: sleeve.title }}
+                </div>
+                {%- break -%}
               {%- endfor -%}
             {%- endif -%}
             <div class="custom-sleeves__option-details">
