@@ -28,12 +28,15 @@
         <div class="custom-sleeves__option" data-sleeve-index="{{ sleeve_index }}">
           <div class="custom-sleeves__option-content">
             {%- if sleeve_images != blank and sleeve_images.size > 0 -%}
-              {%- assign first_image = sleeve_images.first.preview_image -%}
-              {%- if first_image != blank -%}
-                <div class="custom-sleeves__option-image">
-                  {{ first_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: sleeve.title }}
-                </div>
-              {%- endif -%}
+              {%- assign first_item = sleeve_images.first -%}
+
+              <div class="custom-sleeves__option-image">
+                {%- if first_item.preview_image != blank -%}
+                  {{ first_item.preview_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: sleeve.title }}
+                {%- else -%}
+                  {{ first_item | image_url: width: 200 | image_tag: loading: 'lazy', alt: sleeve.title }}
+                {%- endif -%}
+              </div>
             {%- endif -%}
 
             <div class="custom-sleeves__option-details">
