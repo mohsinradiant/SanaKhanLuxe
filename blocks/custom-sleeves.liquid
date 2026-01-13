@@ -23,20 +23,19 @@
       {%- for sleeve in custom_sleeves -%}
         {%- assign sleeve_index = forloop.index0 -%}
         {%- assign sleeve_id = 'custom-sleeve-' | append: block.id | append: '-' | append: sleeve_index -%}
-        {%- assign sleeve_images = sleeve.images.value -%}
 
         <div class="custom-sleeves__option" data-sleeve-index="{{ sleeve_index }}">
           <div class="custom-sleeves__option-content">
-{%- if sleeve.images.value != blank and sleeve.images.value.size > 0 -%}
-  <div class="custom-sleeves__option-image">
-    {%- assign file = sleeve.images.value.first -%}
-
-    <pre style="font-size:12px; white-space:pre-wrap;">
-{{ file | json }}
-    </pre>
-
-  </div>
-{%- endif -%}
+            {%- if sleeve.images.value != blank -%}
+              {%- for img in sleeve.images.value -%}
+                {%- if img != blank -%}
+                  <div class="custom-sleeves__option-image">
+                    {{ img | metafield_tag }}
+                  </div>
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
             <div class="custom-sleeves__option-details">
               {%- if sleeve.title != blank -%}
                 <h4 class="custom-sleeves__option-title">{{ sleeve.title }}</h4>
