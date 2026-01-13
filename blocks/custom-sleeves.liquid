@@ -53,7 +53,6 @@
               {%- endif -%}
             </div>
           </div>
-
           <input
             type="checkbox"
             id="{{ sleeve_id }}"
@@ -62,8 +61,9 @@
             value="{{ sleeve_index }}"
             data-sleeve-title="{{ sleeve.title | escape }}"
             data-sleeve-subtitle="{{ sleeve.sub_title | escape }}"
-            data-sleeve-price="{{ sleeve.price | money }}"
+            data-sleeve-price="{{ sleeve.price.value | money }}"
           >
+
           <label
             class="custom-sleeves__checkbox-label"
             for="{{ sleeve_id }}"
