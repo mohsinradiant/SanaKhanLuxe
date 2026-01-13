@@ -192,19 +192,39 @@
                         {%- endfor -%}
                       {%- endif -%}
 
+                      {% comment %}
+                        {%- for property in item.properties -%}
+                          {%- assign property_first_char = property.first | slice: 0 -%}
+                          {%- if property.last != blank and property_first_char != '_' -%}
+                            <div class="cart-items__properties">
+                              <dt>{{ property.first }}:</dt>
+                              <dd>
+                                {%- if property.last contains '/uploads/' -%}
+                                  <a href="{{ property.last }}">{{ property.last | split: '/' | last }}</a>
+                                {%- else -%}
+                                  {{ property.last }}
+                                {%- endif -%}
+                              </dd>
+                            </div>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      {% endcomment %}
+
+                      {%- assign has_custom_sleeves = false -%}
+
                       {%- for property in item.properties -%}
-                        {%- assign property_first_char = property.first | slice: 0 -%}
-                        {%- if property.last != blank and property_first_char != '_' -%}
-                          <div class="cart-items__properties">
-                            <dt>{{ property.first }}:</dt>
-                            <dd>
-                              {%- if property.last contains '/uploads/' -%}
-                                <a href="{{ property.last }}">{{ property.last | split: '/' | last }}</a>
-                              {%- else -%}
-                                {{ property.last }}
-                              {%- endif -%}
-                            </dd>
-                          </div>
+                        {%- assign key = property.first -%}
+                        {%- assign value = property.last -%}
+                        {%- assign first_char = key | slice: 0 -%}
+
+                        {%- if value != blank and first_char != '_' -%}
+                          {%- if key == 'Custom Sleeves' -%}
+                            {%- assign has_custom_sleeves = true -%}
+                            <div class="cart-items__properties">
+                              <dt>Custom Sleeves:</dt>
+                              <dd>{{ value }}</dd>
+                            </div>
+                          {%- endif -%}
                         {%- endif -%}
                       {%- endfor -%}
                     </dl>
@@ -219,8 +239,8 @@
                     {%- endfor -%}
                     {%- if has_custom_sleeves -%}
                       <p class="cart-items__custom-sleeves-message">
-                        Custom sleeves requested.
-                        You'll receive an email with an invoice link once approved by the team.
+                        Custom sleeves requested. You'll receive an email with an invoice link once approved by the
+                        team.
                       </p>
                     {%- endif -%}
 
