@@ -23,13 +23,12 @@
       {%- for sleeve in custom_sleeves -%}
         {%- assign sleeve_index = forloop.index0 -%}
         {%- assign sleeve_id = 'custom-sleeve-' | append: block.id | append: '-' | append: sleeve_index -%}
-        {%- assign first_image = sleeve.images.value[0] -%}
 
         <div class="custom-sleeves__option" data-sleeve-index="{{ sleeve_index }}">
           <div class="custom-sleeves__option-content">
-            {%- if first_image != blank -%}
+            {%- if sleeve.images != blank -%}
               <div class="custom-sleeves__option-image">
-                {{ first_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: sleeve.title }}
+                {{ sleeve.images.value[0] | image_url: width: 200 | image_tag: loading: 'lazy', alt: sleeve.title }}
               </div>
             {%- endif -%}
 
