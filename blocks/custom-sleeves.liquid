@@ -29,7 +29,7 @@
           <div class="custom-sleeves__option-content">
             {%- if sleeve.images.value != blank and sleeve.images.value.size > 0 -%}
               <div class="custom-sleeves__option-image">
-                {{ sleeve.images.value.first.url | image_tag }}
+                {{ sleeve.images.value.first | image_tag }}
               </div>
             {%- endif -%}
 
